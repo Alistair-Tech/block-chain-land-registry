@@ -1,0 +1,633 @@
+<html>
+    <body>
+        <br><input type ="text" id ="villadmin" placeholder="enter the village admin address"  size="45px">
+        <br><input type ="text" id ="villname" placeholder="enter the village name" size="45px">
+        <br><button  id="addVillageAdmin">CLICK</button>
+
+        <p id="x"></p>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script src="./node_modules/web3/dist/web3.min.js"></script>
+        <script>
+			ethereum.enable()
+            var contract ;
+			$(document).ready(function()
+			{
+				web3 = new Web3(web3.currentProvider);
+                var abi=[
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			}
+		],
+		"name": "acceptOffer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeDegree",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeMinute",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeSecond",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeDegree",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeMinute",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeSecond",
+				"type": "int256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_radius",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_areaInCents",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_marketPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_isDryLand",
+				"type": "bool"
+			}
+		],
+		"name": "addLandCoordinates",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_landOwner",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_state",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_district",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_village",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_surveyNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_subDivisionNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_ownerAadharNumber",
+				"type": "uint256"
+			}
+		],
+		"name": "addLandDetails",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_firstName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_lastName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_addressInfo",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_aadharNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_panNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_phoneNumber",
+				"type": "string"
+			}
+		],
+		"name": "addPersonalInfo",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_adminAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_village",
+				"type": "string"
+			}
+		],
+		"name": "addVillageAdmin",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "approveSaleDetails",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "_latitudeDegreeAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeMinuteAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeSecondAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeDegreeAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeMinuteAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeSecondAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_marketPriceAfterSale",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_radiusAfterSale",
+				"type": "uint256"
+			}
+		],
+		"name": "approveSaleDetails",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_marketPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "editMarketPrice",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_areaForSale",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeDegreeOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeMinuteOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeSecondOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeDegreeOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeMinuteOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeSecondOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_marketPriceOfAreaForSale",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_radiusOfAreaForSale",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minOffer",
+				"type": "uint256"
+			}
+		],
+		"name": "landForSale",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_buyersOffer",
+				"type": "uint256"
+			}
+		],
+		"name": "makeAnOffer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minOffer",
+				"type": "uint256"
+			}
+		],
+		"name": "modifyMinOffer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			}
+		],
+		"name": "rejectOffer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			}
+		],
+		"name": "removeLandForSale",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "requestLinkAadhar",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_OwnerAadharNumber",
+				"type": "uint256"
+			}
+		],
+		"name": "verifyAadhar",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "viewVerificationOfSaleDetails",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			}
+		],
+		"name": "withdrawOffer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_state",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_district",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_village",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_surveyNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_subDivisionNumber",
+				"type": "string"
+			}
+		],
+		"name": "generateLandId",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "viewDetailsInRequestList",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "viewMyPortfolio",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			}
+		],
+		"name": "viewOffer",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_ownerAddress",
+				"type": "address"
+			}
+		],
+		"name": "viewPortfolio",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+                var addr="0xe76850862526bFC08C32228F16bB207E0eBAD863";
+                var contract=new web3.eth.Contract(abi,addr);
+				console.log(contract);
+                $('#addVillageAdmin').click(async function()
+                {  
+				    var village_name;
+                    village_name =$('#villname').val();
+                    console.log(village_name);
+                    var village_admin=$('#villadmin').val();
+					console.log(village_admin);
+                    await web3.eth.getAccounts(function(error,accounts){
+				    console.log(accounts)
+			        var acc =   accounts[0];
+                    return contract.methods.addVillageAdmin(village_admin,village_name).send({from:acc},function(error,result)
+					{
+                      console.log(result);
+					});
+
+                 
+				 })
+               })
+
+
+
+
+            })
+                </script>
+    </body>
+</html>
