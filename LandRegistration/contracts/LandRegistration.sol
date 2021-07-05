@@ -88,7 +88,7 @@ contract LandRegistration {
 
     }
 
-    function addLandDetails(address _landOwner, string memory _state, string memory _district, string memory _village, string memory _surveyNumber, string memory _subDivisionNumber, int _latitudeDegree, int _latitudeMinute, int _latitudeSecond, int _longitudeDegree, int _longitudeMinute, int _longitudeSecond, uint _radius, uint _areaInCents, uint _marketPrice, bool _isDryLand, uint _ownerAadharNumber) public {
+    function addLandDetails(address _landOwner, string memory _state, string memory _district, string memory _village, string memory _surveyNumber, string memory _subDivisionNumber, uint _ownerAadharNumber) public {
         require(adminHierarchy[msg.sender] > 0);
         if(linkAadhar[_landOwner] == 0){
             linkAadhar[_landOwner] = _ownerAadharNumber;
@@ -101,16 +101,20 @@ contract LandRegistration {
         accessLandDetails[landId].village = _village;
         accessLandDetails[landId].surveyNumber = _surveyNumber;
         accessLandDetails[landId].subDivisionNumber = _subDivisionNumber;
-        accessLandDetails[landId].latitudeDegree = _latitudeDegree;
-        accessLandDetails[landId].latitudeMinute = _latitudeMinute;
-        accessLandDetails[landId].latitudeSecond = _latitudeSecond;
-        accessLandDetails[landId].longitudeDegree = _longitudeDegree;
-        accessLandDetails[landId].longitudeMinute = _longitudeMinute;
-        accessLandDetails[landId].longitudeSecond = _longitudeSecond;
-        accessLandDetails[landId].radius = _radius;
-        accessLandDetails[landId].areaInCents = _areaInCents;
-        accessLandDetails[landId].marketPrice = _marketPrice;
-        accessLandDetails[landId].isDryLand = _isDryLand;
+    }
+
+    function addLandCoordinates(uint _landId, int _latitudeDegree, int _latitudeMinute, int _latitudeSecond, int _longitudeDegree, int _longitudeMinute, int _longitudeSecond, uint _radius, uint _areaInCents, uint _marketPrice, bool _isDryLand) public {
+        require(adminHierarchy[msg.sender] > 0);
+        accessLandDetails[_landId].latitudeDegree = _latitudeDegree;
+        accessLandDetails[_landId].latitudeMinute = _latitudeMinute;
+        accessLandDetails[_landId].latitudeSecond = _latitudeSecond;
+        accessLandDetails[_landId].longitudeDegree = _longitudeDegree;
+        accessLandDetails[_landId].longitudeMinute = _longitudeMinute;
+        accessLandDetails[_landId].longitudeSecond = _longitudeSecond;
+        accessLandDetails[_landId].radius = _radius;
+        accessLandDetails[_landId].areaInCents = _areaInCents;
+        accessLandDetails[_landId].marketPrice = _marketPrice;
+        accessLandDetails[_landId].isDryLand = _isDryLand;
     }
 
     function requestLinkAadhar() public {
@@ -150,9 +154,9 @@ contract LandRegistration {
         return portfolio[_ownerAddress];
     }
 
-    function elaboratedLandInfo(uint _landId) public view returns(address, string memory, string memory, string memory, string memory, string memory, int, int, int, int, int, int, uint, uint, uint, bool, bool, uint, uint, bool, uint) {
-        return (accessLandDetails[_landId].landOwner, accessLandDetails[_landId].state, accessLandDetails[_landId].district, accessLandDetails[_landId].village, accessLandDetails[_landId].surveyNumber, accessLandDetails[_landId].subDivisionNumber, accessLandDetails[_landId].latitudeDegree, accessLandDetails[_landId].latitudeMinute, accessLandDetails[_landId].latitudeSecond, accessLandDetails[_landId].longitudeDegree, accessLandDetails[_landId].longitudeMinute, accessLandDetails[_landId].longitudeSecond, accessLandDetails[_landId].radius, accessLandDetails[_landId].areaInCents, accessLandDetails[_landId].marketPrice, accessLandDetails[_landId].isDryLand, accessLandDetails[_landId].isForSale, accessLandDetails[_landId].areaForSale, accessLandDetails[_landId].minOffer, accessLandDetails[_landId].hasAnOffer, accessLandDetails[_landId].buyersOffer);
-    }
+    // function elaboratedLandInfo(uint _landId) public view returns(address, string memory, string memory, string memory, string memory, string memory, int, int, int, int, int, int, uint, uint, uint, bool, bool, uint, uint, bool, uint) {
+    //     return (accessLandDetails[_landId].landOwner, accessLandDetails[_landId].state, accessLandDetails[_landId].district, accessLandDetails[_landId].village, accessLandDetails[_landId].surveyNumber, accessLandDetails[_landId].subDivisionNumber, accessLandDetails[_landId].latitudeDegree, accessLandDetails[_landId].latitudeMinute, accessLandDetails[_landId].latitudeSecond, accessLandDetails[_landId].longitudeDegree, accessLandDetails[_landId].longitudeMinute, accessLandDetails[_landId].longitudeSecond, accessLandDetails[_landId].radius, accessLandDetails[_landId].areaInCents, accessLandDetails[_landId].marketPrice, accessLandDetails[_landId].isDryLand, accessLandDetails[_landId].isForSale, accessLandDetails[_landId].areaForSale, accessLandDetails[_landId].minOffer, accessLandDetails[_landId].hasAnOffer, accessLandDetails[_landId].buyersOffer);
+    // }
 
     function ecomomicLandInfo(uint _landId) public view returns(uint, uint, bool, uint, uint, bool, uint) {
         return (accessLandDetails[_landId].marketPrice, accessLandDetails[_landId].areaInCents, accessLandDetails[_landId].isForSale, accessLandDetails[_landId].areaForSale, accessLandDetails[_landId].minOffer, accessLandDetails[_landId].isDryLand, accessLandDetails[_landId].buyersOffer);
@@ -182,17 +186,6 @@ contract LandRegistration {
 
     function removeLandForSale(uint _landId) public {
         require(msg.sender == accessLandDetails[_landId].landOwner);
-        // accessLandDetails[_landId].isForSale = false;
-        // accessLandDetails[_landId].areaForSale = 0;
-        // accessLandDetails[_landId].latitudeDegreeOfAreaForSale = 0;
-        // accessLandDetails[_landId].latitudeMinuteOfAreaForSale = 0;
-        // accessLandDetails[_landId].latitudeSecondOfAreaForSale = 0;
-        // accessLandDetails[_landId].longitudeDegreeOfAreaForSale = 0;
-        // accessLandDetails[_landId].longitudeMinuteOfAreaForSale = 0;
-        // accessLandDetails[_landId].longitudeSecondOfAreaForSale = 0;
-        // accessLandDetails[_landId].marketPriceOfAreaForSale = 0;
-        // accessLandDetails[_landId].radiusOfAreaForSale = 0;
-        // accessLandDetails[_landId].minOffer = 0;
         _initializeLandDetails(_landId);
     }
 
@@ -273,15 +266,14 @@ contract LandRegistration {
     }
 
     function _partialTransfer(uint _landId) private {
-        // get new subdivision numbers
         string memory _subDivisionNumber1 = _stringconcat(accessLandDetails[_landId].subDivisionNumber, "/1");
         string memory _subDivisionNumber2 = _stringconcat(accessLandDetails[_landId].subDivisionNumber, "/2");
-        // generate new land id
+        
         uint _landId1 = generateLandId(accessLandDetails[_landId].state, accessLandDetails[_landId].district, accessLandDetails[_landId].village, accessLandDetails[_landId].surveyNumber, _subDivisionNumber1);
         uint _landId2 = generateLandId(accessLandDetails[_landId].state, accessLandDetails[_landId].district, accessLandDetails[_landId].village, accessLandDetails[_landId].surveyNumber, _subDivisionNumber2);
-        // pop the previous one
+        
         _removeAssetFromPortfolio(_landId, accessLandDetails[_landId].landOwner);
-        // initialize both new land details
+        
         _initializeLandDetails(_landId1);
         _initializeLandDetails(_landId2);
         accessLandDetails[_landId1].landOwner = accessLandDetails[_landId].landOwner;
@@ -317,9 +309,6 @@ contract LandRegistration {
         accessLandDetails[_landId2].areaInCents = accessLandDetails[_landId].areaForSale;
         accessLandDetails[_landId2].marketPrice = accessLandDetails[_landId].marketPriceOfAreaForSale;
         accessLandDetails[_landId2].isDryLand = accessLandDetails[_landId].isDryLand;
-
-
-        // push them to their respective owners
 
         portfolio[accessLandDetails[_landId1].landOwner].push(_landId1);
         portfolio[accessLandDetails[_landId2].landOwner].push(_landId2);
