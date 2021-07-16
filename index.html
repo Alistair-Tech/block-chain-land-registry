@@ -1,0 +1,830 @@
+<html>
+    <body>
+        <br><input type ="text" id ="villadmin" placeholder="enter the village admin address"  size="45px">
+        <br><input type ="text" id ="villname" placeholder="enter the village name" size="45px">
+        <br><button  id="addVillageAdmin">CLICK TO ADD VILLAGE ADMIN</button>
+		<br><input type ="text" id ="ownerAddress" placeholder="enter the owner address"  size="45px">
+		<br><input type ="text" id ="state" placeholder="enter the state"  size="45px">
+		<br><input type ="text" id ="district" placeholder="enter the district"  size="45px">
+		<br><input type ="text" id ="survno" placeholder="enter the surveyNumber"  size="45px">
+		<br><input type ="text" id ="subdivno" placeholder="enter the Subdivision Number "  size="45px">
+		<br><input type ="text" id ="aadharNumber" placeholder="enter the aadharNumber"  size="45px">
+		<br><button  id="addLandDetails">CLICK TO ADD LAND DETAILS</button>
+		<br><input type ="text" id ="landid" placeholder="enter the Land ID"  size="45px">
+		<br><input type ="text" id ="latitude_degree" placeholder="enter the Latitude Degree"  size="45px">
+		<br><input type ="text" id ="latitude_minutes" placeholder="enter the Latitude_minute"  size="45px">
+		<br><input type ="text" id ="latitude_seconds" placeholder="enter the Latitude_seconds"  size="45px">
+		<br><input type ="text" id ="longitude_degree" placeholder="enter the Longitude_degree"  size="45px">
+		<br><input type ="text" id ="longitude_minute" placeholder="enter the Longitude_minute"  size="45px">
+		<br><input type ="text" id ="longitude_second" placeholder="enter the Longitude_second"  size="45px">
+		<br><input type ="text" id ="radius" placeholder="enter the Radius"  size="45px">
+		<br><input type ="text" id ="area" placeholder="enter the Area(In cents)"  size="45px">
+		<br><input type ="text" id ="marketprice" placeholder="enter the marketprice of the land"  size="45px">
+		<br><input type ="text" id ="dryland" placeholder="Is this a dry land ?"  size="45px">
+		<br><button  id="addLandCoordinates">CLICK TO ADD LAND COORDINATES</button>
+		<br><input type ="text" id ="land_id" placeholder="enter the Landidforsale"  size="45px">
+		<br><input type ="text" id ="areaforsale" placeholder="enter the areaforsale"  size="45px">
+		<br><input type ="text" id ="_latitudedegreeforsale" placeholder="enter the latitudedegreeforale"  size="45px">
+		<br><input type ="text" id ="_latitudeminuteforsale" placeholder="enter the latitudeminutesfor sale"  size="45px">
+		<br><input type ="text" id ="_latitudesecondsforsale" placeholder="enter the latitudesecondsfor sale"  size="45px">
+		<br><input type ="text" id ="_longitudedegreeforsale" placeholder="enter the longitude degree for sale"  size="45px">
+		<br><input type ="text" id ="_longitudeminuteforsale" placeholder="enter the longitude minutes for sale"  size="45px">
+		<br><input type ="text" id ="_longitudesecondsforsale" placeholder="enter the longitude seconds for sale"  size="45px">
+		<br><input type ="text" id ="_marketpriceforsale" placeholder="enter the market price for sale"  size="45px">
+		<br><input type ="text" id ="raduisforsale" placeholder="enter the rdius "  size="45px">
+		<br><input type ="text" id ="minoffer" placeholder="enter the min offer price"  size="45px">
+		<br><button  id="addLandforsale">CLICK TO ADD LAND FOR SALE</button>
+		<br><input type ="text" id ="landid_" placeholder="enter the Land id "  size="45px">
+		<br><input type ="text" id ="marketprice_" placeholder="enter the market price"  size="45px">
+		<br><button  id="editMarketPrice">CLICK TO EDIT MARKET PRICE</button>
+		<br><input type ="text" id ="firstname" placeholder="enter the FIRSTNAME"  size="45px">
+		<br><input type ="text" id ="lastname" placeholder="enter the LASTNAME"  size="45px">
+		<br><input type ="text" id ="addressinfo" placeholder="enter the ADDRESSINFO"  size="45px">
+		<br><input type ="text" id ="aadarno_" placeholder="enter the AADARNUMBER"  size="45px">
+		<br><input type ="text" id ="panno_" placeholder="enter the PAN NUMBER"  size="45px">
+		<br><input type ="text" id ="phnno_" placeholder="enter the PHONE NUMBER"  size="45px">
+		<br><button  id="addpersonalinfo">CLICK TO ADD PERSONAL INFO</button>
+		
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script src="./node_modules/web3/dist/web3.min.js"></script>
+        <script>
+			ethereum.enable()
+            var contract ;
+			$(document).ready(function()
+			{
+               if (typeof web3 !== 'undefined') {
+            web3= new Web3(web3.currentProvider);
+            } else {
+             web3= new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+              }
+                var abi=[
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			}
+		],
+		"name": "acceptOffer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeDegree",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeMinute",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeSecond",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeDegree",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeMinute",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeSecond",
+				"type": "int256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_radius",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_areaInCents",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_marketPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_isDryLand",
+				"type": "bool"
+			}
+		],
+		"name": "addLandCoordinates",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_landOwner",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_state",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_district",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_village",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_surveyNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_subDivisionNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_ownerAadharNumber",
+				"type": "uint256"
+			}
+		],
+		"name": "addLandDetails",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_firstName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_lastName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_addressInfo",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_aadharNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_panNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_phoneNumber",
+				"type": "string"
+			}
+		],
+		"name": "addPersonalInfo",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_adminAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_village",
+				"type": "string"
+			}
+		],
+		"name": "addVillageAdmin",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "approveSaleDetails",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "_latitudeDegreeAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeMinuteAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeSecondAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeDegreeAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeMinuteAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeSecondAfterSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_marketPriceAfterSale",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_radiusAfterSale",
+				"type": "uint256"
+			}
+		],
+		"name": "approveSaleDetails",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_marketPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "editMarketPrice",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_areaForSale",
+				"type": "uint256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeDegreeOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeMinuteOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_latitudeSecondOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeDegreeOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeMinuteOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "_longitudeSecondOfAreaForSale",
+				"type": "int256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_marketPriceOfAreaForSale",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_radiusOfAreaForSale",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minOffer",
+				"type": "uint256"
+			}
+		],
+		"name": "landForSale",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_buyersOffer",
+				"type": "uint256"
+			}
+		],
+		"name": "makeAnOffer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minOffer",
+				"type": "uint256"
+			}
+		],
+		"name": "modifyMinOffer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			}
+		],
+		"name": "rejectOffer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			}
+		],
+		"name": "removeLandForSale",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "requestLinkAadhar",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_OwnerAadharNumber",
+				"type": "uint256"
+			}
+		],
+		"name": "verifyAadhar",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "viewVerificationOfSaleDetails",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			}
+		],
+		"name": "withdrawOffer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_state",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_district",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_village",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_surveyNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_subDivisionNumber",
+				"type": "string"
+			}
+		],
+		"name": "generateLandId",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "viewDetailsInRequestList",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "viewMyPortfolio",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_landId",
+				"type": "uint256"
+			}
+		],
+		"name": "viewOffer",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_ownerAddress",
+				"type": "address"
+			}
+		],
+		"name": "viewPortfolio",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+                var addr="0x428f0Fc6c7B7AE57126bF685F9fcf992a27572ba";
+                var contract=new web3.eth.Contract(abi,addr);
+				console.log(contract);
+                $('#addVillageAdmin').click(async function()
+                {  
+				    var village_name;
+                    village_name =$('#villname').val();
+                    console.log(village_name);
+                    var village_admin=$('#villadmin').val();
+					console.log(village_admin);
+                    await web3.eth.getAccounts(function(error,accounts){
+				    console.log(accounts)
+			        var acc =   accounts[0];
+                    return contract.methods.addVillageAdmin(village_admin,village_name).send({from:acc},function(error,result)
+					{
+                      console.log(result);
+					});
+
+                 
+				 })
+				})
+				 $('#addLandDetails').click(async function(){
+					var  state=$('#state').val();
+					state.toString();
+					var  district=$('#district').val();
+					district.toString();
+					var survno =$('#survno').val();
+					survno.toString();
+					var subdivno=$('#subdivno').val();
+					subdivno.toString();
+					console.log(typeof subdivno);
+					var aadar=$('#aadharNumber').val();
+					var village_name =$('#villname').val();
+					village_name.toString();
+					var ownerAddress=[];
+					ownerAddress.push( $('#ownerAddress').val());
+					ownerAddress.toString();
+					console.log(typeof ownerAddress[0]);
+					await web3.eth.getAccounts( function(error,accounts){
+				    console.log(accounts)
+			        var acc =   accounts[0];
+					return contract.methods.addLandDetails(ownerAddress[0],state,district,village_name,survno,subdivno,aadar).send({from:acc})
+					.then(function(resolve){
+						console.log(resolve)
+
+					}).catch(function(error){ 
+							console.log(error);
+					})
+					})
+
+				})
+				$('#addLandCoordinates').click(async function(){
+					
+				
+					var  landid=$('#landid').val();
+					landid = parseInt(landid);
+					console.log(landid)
+					console.log(typeof landid)
+					var  latitude_degree=$('#latitude_degree').val();
+					latitude_degree=parseInt(latitude_degree);
+					var latitude_minutes =$('#latitude_minutes').val();
+					latitude_minutes=parseInt(latitude_minutes);
+					var latitude_seconds=$('#latitude_seconds').val();
+					latitude_seconds=parseInt(latitude_seconds);
+					console.log(latitude_seconds);
+					var longitude_degree=$('#longitude_degree').val();
+					longitude_degree=parseInt(longitude_degree);
+					var longitude_minute =$('#longitude_minute').val();
+					longitude_minute=parseInt(longitude_minute);
+					var longitude_second =$('#longitude_second').val();
+					longitude_second=parseInt(longitude_second);
+					var radius =$('#radius').val();
+					radius=parseInt(radius);
+					var area =$('#area').val();
+					area=parseInt(area);
+					var marketprice =$('#marketprice').val();
+					marketprice=parseInt(marketprice);
+					var dryland =$('#dryland').val();
+				    await web3.eth.getAccounts( function(error,accounts){
+				    console.log(accounts)
+			        var acc =   accounts[0];
+					return contract.methods.addLandCoordinates(landid,latitude_degree,latitude_minutes,latitude_seconds,longitude_degree,longitude_minute,longitude_second,radius,area,marketprice,dryland).send({from:acc})
+					.then(function(resolve){
+						console.log(resolve)
+
+					}).catch(function(error){ 
+							console.log(error);
+					})
+					})
+
+				 
+               })
+			   $('#addLandforsale').click(async function(){
+			       var  _landid=$('#land_id').val();
+					_landid = parseInt(_landid);
+					console.log(_landid)
+					console.log(typeof _landid)
+					var areaforsale = $('#areaforsale').val();
+					areaforsale =parseInt(areaforsale);
+					var  _latitudedegree=$('#_latitudedegreeforsale').val();
+					_latitudedegree=parseInt(_latitudedegree);
+					var _latitudeminutes =$('#_latitudeminuteforsale').val();
+					_latitudeminutes=parseInt(_latitudeminutes);
+					var _latitudeseconds=$('#_latitudesecondsforsale').val();
+					_latitudeseconds=parseInt(_latitudeseconds);
+					console.log(_latitudeseconds);
+					var _longitudedegree=$('#_longitudedegreeforsale').val();
+					_longitudedegree=parseInt(_longitudedegree);
+					var _longitudeminute =$('#_longitudeminuteforsale').val();
+					_longitudeminute=parseInt(_longitudeminute);
+					var _longitudesecond =$('#_longitudesecondsforsale').val();
+					_longitudesecond=parseInt(_longitudesecond);
+					var marketpriceforsale =$('#_marketpriceforsale').val();
+					marketpriceforsale=parseInt(marketpriceforsale);
+					var raduisforsale =$('#raduisforsale').val();
+					raduisforsale=parseInt(raduisforsale);
+					var minoffer =$('#minoffer').val();
+					minoffer=parseInt(minoffer);
+					 web3.eth.getAccounts( function(error,accounts){
+				    console.log(accounts)
+			        var acc =   accounts[0];
+					return contract.methods.landForSale(_landid,areaforsale,_latitudedegree,_latitudeminutes,_latitudeseconds,_longitudedegree,_longitudeminute,_longitudesecond,marketpriceforsale,raduisforsale,minoffer).send({from:acc})
+					.then(function(resolve){
+						console.log(resolve)
+
+				//	}).catch(function(error){ 
+					//		console.log(error);
+					})
+					})
+				})
+				$('#editMarketPrice').click(async function(){
+					var  landid1=$('#landid_').val();
+					landid1= parseInt(landid1);
+					console.log(landid1)
+					var marketprice1=$('#marketprice_').val();
+					marketprice1=parseInt(marketprice1); 
+					console.log(marketprice1);
+					await web3.eth.getAccounts( function(error,accounts){
+				    console.log(accounts)
+			        var acc =   accounts[0];
+					return contract.methods.editMarketPrice(landid1,marketprice1).send({from:acc})
+					.then(function(resolve){
+						console.log(resolve)
+
+					}).catch(function(error){ 
+							console.log(error);
+					})
+					})
+
+
+
+				})
+				$('#addpersonalinfo').click(async function(){
+					var  firstname=$('#firstname').val();
+					var lastname=$('#lastname').val();
+					var  addressinfo=$('#addressinfo').val();
+					var  aadarno=$('#aadarno_').val();
+					var  panno=$('#panno_').val();
+					var  phnno=$('#phnno_').val();
+					await web3.eth.getAccounts( function(error,accounts){
+				    console.log(accounts)
+			        var acc =   accounts[0];
+					return contract.methods.addPersonalInfo(firstname,lastname,addressinfo,aadarno,panno,phnno).send({from:acc})
+					.then(function(resolve){
+						console.log(resolve)
+
+					}).catch(function(error){ 
+							console.log(error);
+					})
+					})
+
+
+
+				})
+
+				
+			})
+
+            </script>
+    </body>
+</html>
