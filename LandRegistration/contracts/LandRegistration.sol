@@ -211,6 +211,11 @@ contract LandRegistration {
         _popRequestOfSaleDetails();
     }
 
+    function rejectSaleDetails() public {
+        require(adminHierarchy[msg.sender] > 0);
+        _popRequestOfSaleDetails();
+    }
+
     function approveSaleDetails(int _latitudeDegreeAfterSale, int _latitudeMinuteAfterSale, int _latitudeSecondAfterSale, int _longitudeDegreeAfterSale, int _longitudeMinuteAfterSale, int _longitudeSecondAfterSale, uint _marketPriceAfterSale, uint _radiusAfterSale) public {
         require(adminHierarchy[msg.sender] > 0);
         accessLandDetails[requestOfSaleDetails[0]].latitudeDegreeAfterSale = _latitudeDegreeAfterSale;
